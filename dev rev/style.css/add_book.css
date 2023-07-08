@@ -1,0 +1,74 @@
+// Sample data for book list
+const books = [];
+
+// Function to add a new book
+function addBook(event) {
+  event.preventDefault();
+
+  const titleInput = document.getElementById('title');
+  const authorInput = document.getElementById('author');
+  const genreInput = document.getElementById('genre');
+  const publicationYearInput = document.getElementById('publication-year');
+
+  const newBook = {
+    title: titleInput.value.trim(),
+    author: authorInput.value.trim(),
+    genre: genreInput.value.trim(),
+    publicationYear: parseInt(publicationYearInput.value.trim())
+  };
+
+  books.push(newBook);
+  displayBooks();
+
+  // Clear input fields after adding a book
+  titleInput.value = '';
+  authorInput.value = '';
+  genreInput.value = '';
+  publicationYearInput.value = '';
+}
+
+// Function to display books in the book list
+function displayBooks() {
+  const bookResults = document.getElementById('book-results');
+  bookResults.innerHTML = '';
+
+  books.forEach(book => {
+    const bookItem = document.createElement('li');
+    bookItem.textContent = `${book.title} by ${book.author}`;
+    bookResults.appendChild(bookItem);
+  });
+}
+
+// Event listener for add book form submission
+const addBookForm = document.getElementById('add-book-form');
+addBookForm.addEventListener('submit', addBook);
+
+// Event listener for search button
+const searchButton = document.getElementById('search-button');
+searchButton.addEventListener('click', () => {
+  const searchInput = document.getElementById('search-input');
+  const query = searchInput.value.trim().toLowerCase();
+
+  // Filtering books based on the search query
+  const filteredBooks = books.filter(book => {
+    return (
+      book.title.toLowerCase().includes(query) ||
+      book.author.toLowerCase().includes(query) ||
+      book.genre.toLowerCase().includes(query) ||
+      book.publicationYear.toString().includes(query)
+    );
+  });
+
+  // Displaying filtered books
+  const bookResults = document.getElementById('book-results');
+  bookResults.innerHTML = '';
+
+  filteredBooks.forEach(book => {
+    const bookItem = document.createElement('li');
+    bookItem.textContent = `${book.title} by ${book.author}`;
+    bookResults.appendChild(bookItem);
+  });
+});
+
+// Display initial book list
+displayBooks();
